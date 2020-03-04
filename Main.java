@@ -1,125 +1,96 @@
 package com.company;
 
 import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*;
 import java.awt.geom.AffineTransform;
 
-import javax.swing.*;
-import java.io.IOException;
 
 public class Main extends JPanel {
 
-    private class Display extends JPanel {
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D)g;
-            g2.translate(300,300);  // Moves (0,0) to the center of the display.
-            int whichTransform = transformSelect.getSelectedIndex();
+    //------- For drawing ONLY while paintComponent is being executed! --------
 
-            switch(whichTransform)
-            {
-                case 0: break;
-                case 1:
-                    g2.scale(0.5,0.5);
-                    break;
+    private Graphics2D g2; // A copy of the graphics context from paintComponent.
 
-                case 2:
-
-                    g2.rotate(0.5);
-                    break;
-
-                case 3:
-                    g2.scale(0.5,0.8);
-                    g2.rotate(Math.toRadians(180));
-                    break;
-
-                case 4:
-                    g2.shear(0.35,0);
-                    break;
-
-                case 5:
-                    g2.scale(1,0.3);
-                    g2.translate(0,-900);
-                    break;
-
-                case 6:
-                    g2.shear(0,-0.5);
-                    g2.rotate(Math.PI / 2);
-                    break;
-
-                case 7:
-                    g2.scale(0.5, 1);
-                    g2.rotate(Math.PI);
-                    break;
-
-
-                case 8:
-                    g2.rotate(Math.toRadians(30));
-                    g2.scale(1,0.3);
-                    g2.translate(0,200);
-                    break;
-
-                case 9:
-                    g2.translate(100, 0);
-                    g2.shear(0, 0.25);
-                    g2.rotate(Math.PI);
-                    break;
-
-            }
-
-
-
-            int[] xpoints = new int[17];
-            int[] ypoints = new int[17];
-
-            for(int i=1; i<=17; i++)
-            {
-                xpoints[i-1] = (int) (150*Math.cos((2*Math.PI/17)*i));
-            }
-            for(int i=1; i<=17; i++)
-            {
-                ypoints[i-1] = (int) (150*Math.sin((2*Math.PI/17)*i));
-            }
-
-            Polygon pentagon = new Polygon(xpoints, ypoints, 17);
-            g2.fillPolygon(pentagon);
-        }
-    }
-
-    private Display display;
-
-    private JComboBox<String> transformSelect;
-
-    public Main() throws IOException {
-
-        display = new Display();
-        display.setBackground(Color.RED);
-        display.setPreferredSize(new Dimension(600,600));
-        transformSelect = new JComboBox<String>();
-        transformSelect.addItem("None");
-        for (int i = 1; i <= 9; i++) {
-            transformSelect.addItem("No. " + i);
-        }
-        transformSelect.addActionListener( new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                display.repaint();
-            }
-        });
-        setLayout(new BorderLayout(3,3));
-        setBackground(Color.BLUE);
-        setBorder(BorderFactory.createLineBorder(Color.BLUE,10));
-        JPanel top = new JPanel();
-        top.setLayout(new FlowLayout(FlowLayout.CENTER));
-        top.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        top.add(new JLabel("Transform: "));
-        top.add(transformSelect);
-        add(display,BorderLayout.CENTER);
-        add(top,BorderLayout.NORTH);
+    /**
+     * Removes any transformations that have been applied to g2, so that
+     * it is back to the standard default coordinate system.
+     */
+    private void resetTransform() {
+        g2.setTransform(new AffineTransform());
     }
 
 
-    public static void main(String[] args) throws IOException {
-        JFrame window = new JFrame("2D Transforms");
+    void square() {
+        g2.fillRect(-50,-50,100,100);
+    }
+
+
+    //-----------------------------------------------------------------------------------
+
+
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g2 = (Graphics2D)g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // TODO Draw the required image, using ONLY the four methods defined above,
+        // along with g2.setColor, g1.scale, g2.translate, and g2.rotate.
+
+        /* ----------------------------------------------------------------------- */
+
+        // REMOVE THE FOLLOWING CODE, which draws a big red X in the upper right quadrant,
+        // and insert your own code to draw the required pictures in the four quadrants.
+
+        // The next two line scale the X to be twice the original size
+        // and then moves the center of the X from (0,0) to (450,150).
+
+        g2.translate(300,200);
+
+
+        // Set the drawing color to red.
+
+        g2.setColor(Color.RED);
+
+        // The next three lines draw a tilted rectangle centered at (0,0).
+
+        g2.rotate(Math.PI/1);
+        g2.scale(2.25,0.15);
+        square();
+
+        resetTransform();
+        g2.translate(300,300);
+        g2.rotate(-Math.PI/4.5);
+        g2.scale(2.9,0.15);
+        square();
+
+        resetTransform();
+        g2.translate(300,400);
+        g2.rotate(Math.PI/1);
+        g2.scale(2.25,0.15);
+        square();
+
+
+
+
+
+
+        resetTransform();
+
+        /* ----------------------------------------------------------------------- */
+
+    } // end paintComponent()
+
+
+    //--------------------------------------------------------------------------------------
+
+    public Main() {
+        setPreferredSize(new Dimension(600,600) );
+        setBackground(Color.WHITE);
+        setBorder(BorderFactory.createLineBorder(Color.BLACK,4));
+    }
+
+    public static void main(String[] args)  {
+        JFrame window = new JFrame("Drawing With Transforms");
         window.setContentPane(new Main());
         window.pack();
         window.setResizable(false);
