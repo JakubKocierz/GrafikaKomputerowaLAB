@@ -69,16 +69,16 @@ public class Main extends JPanel {
 
 
 
-            int[] xpoints = new int[17];
-            int[] ypoints = new int[17];
+            int[] xpoints = new int[16];
+            int[] ypoints = new int[16];
 
-            for(int i=1; i<=17; i++)
+            for(int i=1; i<=16; i++)
             {
-                xpoints[i-1] = (int) (150*Math.cos((2*Math.PI/17)*i));
+                xpoints[i-1] = (int) (150*Math.cos((2*Math.PI/16)*i));
             }
-            for(int i=1; i<=17; i++)
+            for(int i=1; i<=16; i++)
             {
-                ypoints[i-1] = (int) (150*Math.sin((2*Math.PI/17)*i));
+                ypoints[i-1] = (int) (150*Math.sin((2*Math.PI/16)*i));
             }
 
             Polygon pentagon = new Polygon(xpoints, ypoints, 17);
