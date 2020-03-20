@@ -65,8 +65,8 @@
      function trojkat2(x,y,scale)
     {
      graphics.scale(scale,scale);
-      poly(2.5+x,1.60+y,13,1);
-        poly(-2+x,0.9+y,13,1);
+      poly(2.5+x,1.60+y,16,1);
+        poly(-2+x,0.9+y,16,1);
                 filledRect(x+0.5,y-0.75);
                 filledTriangle2(x,y);
     }
